@@ -28,9 +28,8 @@
       </header>
 
       <main>
-        <section class="intro" id="calculator" aria-labelledby="page-title">
+        <section class="intro" id="calculator" aria-label="冲泡配方计算器">
           <p class="eyebrow"><span class="eyebrow-dot"></span> 先算清楚，再开始冲</p>
-          <h1 id="page-title">今天的水，<em>刚刚好。</em></h1>
           <p class="intro-copy">输入粉量和水粉比，把每一段注水拆成可执行的克数。</p>
         </section>
 
@@ -70,10 +69,24 @@
               <label class="field-label" for="stage-mode">冲泡段数</label>
               <div class="select-wrap">
                 <select id="stage-mode" name="stage-mode">
-                  <option value="1">一段式</option>
                   <option value="2">两段式</option>
                   <option value="3" selected>三段式</option>
+                  <option value="4">四段式</option>
+                  <option value="5">五段式</option>
                   <option value="custom">自定义多段</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field field-full custom-count-field" id="custom-count-field" hidden>
+              <label class="field-label" for="custom-stage-count">自定义段数</label>
+              <div class="select-wrap">
+                <select id="custom-stage-count" name="custom-stage-count">
+                  <option value="2">2 段</option>
+                  <option value="3">3 段</option>
+                  <option value="4" selected>4 段</option>
+                  <option value="5">5 段</option>
+                  <option value="6">6 段</option>
                 </select>
               </div>
             </div>
@@ -81,9 +94,8 @@
             <div class="stages-heading">
               <div>
                 <span class="field-label">每段注水比例</span>
-                <span class="field-hint">所有比例合计需要等于 100%</span>
+                <span class="field-hint">前面各段可调整，最后一段自动补足到 100%</span>
               </div>
-              <button class="text-button" id="add-stage" type="button" hidden onclick="window.BrewRatio.addStage()">＋ 添加一段</button>
             </div>
 
             <div class="stage-inputs" id="stage-inputs" aria-live="polite"></div>
@@ -96,8 +108,9 @@
 
             <div class="form-actions">
               <button class="button button-primary" id="save-recipe" type="submit">
-                <span class="button-icon" aria-hidden="true">＋</span> 保存配方
+                <span class="button-icon" aria-hidden="true">＋</span> <span id="save-label">保存为新配方</span>
               </button>
+              <button class="button button-quiet" id="save-as-new" type="button" hidden onclick="window.BrewRatio.saveAsNewRecipe()">另存为新配方</button>
               <button class="button button-quiet" id="reset-recipe" type="button" onclick="window.BrewRatio.resetForm()">重置</button>
             </div>
           </form>

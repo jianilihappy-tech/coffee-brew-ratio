@@ -111,21 +111,20 @@ option { color: var(--ink); background: var(--paper); }
 .text-button { padding: 0; border: 0; color: var(--sage); background: transparent; font-size: 12px; font-weight: 700; }
 .text-button:hover { color: var(--cream); }
 .stage-inputs { display: grid; gap: 9px; margin-top: 14px; }
-.stage-input-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) 58px 22px 26px; align-items: center; gap: 9px; }
+.stage-input-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) 58px 22px; align-items: center; gap: 9px; }
 .stage-index { color: rgba(245, 240, 232, 0.45); font: 11px var(--mono); }
 .stage-line { height: 1px; background: rgba(245, 240, 232, 0.16); }
 .stage-input-row input { width: 100%; border: 1px solid rgba(245, 240, 232, 0.21); border-radius: 8px; padding: 8px 7px; color: var(--paper); background: rgba(255, 250, 241, 0.08); font: 13px var(--mono); text-align: right; }
 .stage-input-row input:focus { border-color: var(--sage); outline: 0; }
+.stage-input-row input[readonly] { color: var(--sage); border-color: rgba(154, 180, 143, 0.45); background: rgba(154, 180, 143, 0.11); }
 .stage-unit { color: rgba(245, 240, 232, 0.55); font: 11px var(--mono); }
-.remove-stage { width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%; color: rgba(245, 240, 232, 0.55); background: transparent; font-size: 18px; line-height: 1; }
-.remove-stage:hover { color: #f2a18b; background: rgba(169, 79, 50, 0.2); }
 .form-error { min-height: 18px; margin: 12px 0 0; color: #f2a18b; font-size: 12px; line-height: 1.5; }
 .recipe-name-field { margin-top: 19px; }
 .optional-label { margin-left: 4px; color: rgba(245, 240, 232, 0.45); font: 10px var(--mono); font-weight: 400; }
 .name-input { width: 100%; border: 1px solid rgba(245, 240, 232, 0.18); border-radius: 10px; padding: 12px 13px; outline: 0; color: var(--paper); background: rgba(255, 250, 241, 0.08); font-size: 13px; }
 .name-input::placeholder { color: rgba(245, 240, 232, 0.35); }
 .name-input:focus { border-color: var(--sage); }
-.form-actions { display: flex; gap: 10px; align-items: center; margin-top: 20px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 20px; }
 .button { min-height: 43px; border: 1px solid transparent; border-radius: 10px; padding: 0 15px; transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease; font-size: 13px; font-weight: 800; }
 .button:hover { transform: translateY(-1px); }
 .button:active { transform: translateY(0); }
