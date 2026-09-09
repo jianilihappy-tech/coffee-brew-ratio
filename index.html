@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#171513" />
+    <meta name="description" content="简单、清晰的咖啡冲泡水粉比与分段注水计算器。" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="冲泡配方" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icon.svg" />
+    <title>冲泡配方 · Brew Ratio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#calculator" aria-label="返回冲泡配方计算器">
+          <span class="brand-mark" aria-hidden="true">BR</span>
+          <span>
+            <span class="brand-kicker">BREW RATIO</span>
+            <span class="brand-title">冲泡配方</span>
+          </span>
+        </a>
+        <span class="topbar-note">个人冲煮工具</span>
+      </header>
+
+      <main>
+        <section class="intro" id="calculator" aria-labelledby="page-title">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> 先算清楚，再开始冲</p>
+          <h1 id="page-title">今天的水，<em>刚刚好。</em></h1>
+          <p class="intro-copy">输入粉量和水粉比，把每一段注水拆成可执行的克数。</p>
+        </section>
+
+        <section class="calculator-grid" aria-label="冲泡计算">
+          <form class="panel input-panel" id="recipe-form" novalidate>
+            <div class="panel-heading">
+              <div>
+                <p class="section-index">01 / INPUT</p>
+                <h2>配方参数</h2>
+              </div>
+              <span class="mini-stamp">手冲</span>
+            </div>
+
+            <div class="field-row split-row">
+              <label class="field">
+                <span class="field-label">咖啡粉重量</span>
+                <span class="input-shell">
+                  <input id="dose" name="dose" type="number" inputmode="decimal" min="0.1" step="0.1" value="8" autocomplete="off" />
+                  <span class="unit">g</span>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-label">水粉比</span>
+                <span class="input-shell ratio-shell">
+                  <span class="ratio-prefix">1 :</span>
+                  <input id="ratio" name="ratio" type="number" inputmode="decimal" min="0.1" step="0.1" value="15" autocomplete="off" />
+                </span>
+              </label>
+            </div>
+
+            <div class="formula-strip" aria-label="计算公式">
+              <span>总水量</span>
+              <span class="formula">粉量 × 水粉比</span>
+            </div>
+
+            <div class="field field-full">
+              <label class="field-label" for="stage-mode">冲泡段数</label>
+              <div class="select-wrap">
+                <select id="stage-mode" name="stage-mode">
+                  <option value="1">一段式</option>
+                  <option value="2">两段式</option>
+                  <option value="3" selected>三段式</option>
+                  <option value="custom">自定义多段</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="stages-heading">
+              <div>
+                <span class="field-label">每段注水比例</span>
+                <span class="field-hint">所有比例合计需要等于 100%</span>
+              </div>
+              <button class="text-button" id="add-stage" type="button" hidden onclick="window.BrewRatio.addStage()">＋ 添加一段</button>
+            </div>
+
+            <div class="stage-inputs" id="stage-inputs" aria-live="polite"></div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+
+            <label class="field field-full recipe-name-field" for="recipe-name">
+              <span class="field-label">配方名称 <span class="optional-label">可选</span></span>
+              <input class="name-input" id="recipe-name" name="recipe-name" type="text" maxlength="40" placeholder="例如：日常 V60" autocomplete="off" />
+            </label>
+
+            <div class="form-actions">
+              <button class="button button-primary" id="save-recipe" type="submit">
+                <span class="button-icon" aria-hidden="true">＋</span> 保存配方
+              </button>
+              <button class="button button-quiet" id="reset-recipe" type="button" onclick="window.BrewRatio.resetForm()">重置</button>
+            </div>
+          </form>
+
+          <section class="panel result-panel" aria-labelledby="result-title">
+            <div class="panel-heading result-heading">
+              <div>
+                <p class="section-index">02 / RESULT</p>
+                <h2 id="result-title">注水路线</h2>
+              </div>
+              <span class="live-tag"><span></span> 实时计算</span>
+            </div>
+
+            <div class="total-water-card">
+              <div>
+                <span class="card-label">TOTAL WATER / 总水量</span>
+                <strong id="total-water">120.0</strong><span class="total-unit">g</span>
+              </div>
+              <div class="drop-orbit" aria-hidden="true">
+                <span class="orbit orbit-a"></span>
+                <span class="orbit orbit-b"></span>
+                <span class="drop">◆</span>
+              </div>
+            </div>
+
+            <div class="route-header">
+              <span>分段</span>
+              <span>本段注水</span>
+              <span>累计注水</span>
+            </div>
+            <div class="stage-results" id="stage-results"></div>
+            <p class="result-note">水量按 0.1g 显示。实际冲煮时，以电子秤读数为准。</p>
+          </section>
+        </section>
+
+        <section class="saved-section" aria-labelledby="saved-title">
+          <div class="section-heading-row">
+            <div>
+              <p class="section-index">03 / LIBRARY</p>
+              <h2 id="saved-title">我的配方</h2>
+            </div>
+            <span class="saved-count" id="saved-count">0 份</span>
+          </div>
+          <div class="saved-list" id="saved-list"></div>
+        </section>
+
+        <section class="privacy-note" aria-label="保存说明">
+          <span class="privacy-icon" aria-hidden="true">↳</span>
+          <p>配方只保存在这台设备的当前浏览器中，不需要注册账号。</p>
+        </section>
+      </main>
+
+      <footer class="footer">Brew Ratio <span>·</span> 用数字，把好喝重复出来</footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog class="confirm-dialog" id="delete-dialog" aria-labelledby="delete-dialog-title">
+      <div class="dialog-inner">
+        <span class="dialog-mark" aria-hidden="true">!</span>
+        <h2 id="delete-dialog-title">删除这份配方？</h2>
+        <p>删除后无法从配方列表中恢复。</p>
+        <form class="dialog-actions" method="dialog" novalidate>
+          <button class="button button-quiet" value="cancel">先留着</button>
+          <button class="button button-danger" value="confirm">删除配方</button>
+        </form>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

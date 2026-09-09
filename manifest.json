@@ -1,0 +1,15 @@
+{
+  "name": "冲泡配方 · Brew Ratio",
+  "short_name": "冲泡配方",
+  "description": "咖啡水粉比和分段注水计算器",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#171513",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
